@@ -1,16 +1,19 @@
+print("Init file loaded")
+
 vim.cmd('language en_US.UTF-8')
 
 -- Install lazy.nvim package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+  vim.fn.system({
+    "git",
+    "clone",
+-- or                              , branch = '0.1.x',
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -34,11 +37,15 @@ require("lazy").setup({
     {'hrsh7th/nvim-cmp'},
     {'L3MON4D3/LuaSnip'},
 
+    -- Better list UI
+    {'nvim-telescope/telescope.nvim', tag = '0.1.6', dependencies = { 'nvim-lua/plenary.nvim' }},
+
+    -- Fast file switch
     {
-        'nvim-telescope/telescope.nvim',
-        tag = '0.1.6',
-        dependencies = { 'nvim-lua/plenary.nvim' }
-    }
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
 })
 
 -- Theme setup
@@ -48,17 +55,6 @@ require("catppuccin").setup({
 })
 vim.opt.termguicolors = true
 vim.cmd.colorscheme "catppuccin"
-
--- Airline fix
-vim.g.airline_theme = 'dark'
-vim.g.airline_powerline_fonts = 1
-vim.g.airline_left_sep = ""
-vim.g.airline_left_alt_sep = ""
-vim.g.airline_right_sep = ""
-vim.g.airline_right_alt_sep = ""
-vim.g.airline_branch_symbol = ""
-vim.g.airline_readonly_symbol = ""
-vim.g.airline_modified_symbol = "●"
 
 -- Treesitter setup
 require("nvim-treesitter.configs").setup({
@@ -74,8 +70,8 @@ require("nvim-treesitter.configs").setup({
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
-    -- see :help lsp-zero-keybindings
-    -- to learn the available actions
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
     lsp_zero.default_keymaps({buffer = bufnr})
 
     -- Change "references overview" to use telescope
@@ -92,6 +88,25 @@ require('mason-lspconfig').setup({
         end,
     },
 })
+
+-- Harpoon setup
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
+vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -170,10 +185,20 @@ vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left>
 -- Make current file executable
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
--- Default telescope keymaps
+-- Harpoon hotkeys
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+vim.keymap.set('n', '<leader>pg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>pb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>ph', builtin.help_tags, {})
+
+vim.g.airline_theme = 'dark'
+vim.g.airline_powerline_fonts = 1
+vim.g.airline_left_sep = ""
+vim.g.airline_left_alt_sep = ""
+vim.g.airline_right_sep = ""
+vim.g.airline_right_alt_sep = ""
+vim.g.airline_branch_symbol = ""
+vim.g.airline_readonly_symbol = ""
+vim.g.airline_modified_symbol = "●"
 
