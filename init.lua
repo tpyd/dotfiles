@@ -2,6 +2,9 @@
 -- default use the system language set by the OS.
 vim.env.LANG = "en_US"
 
+-- Set the leader key to be space
+vim.g.mapleader = " "
+
 -- TODO If you have an unaligned line, and you tab in front to try 
 -- and align, the line will not be aligned unless the cursor is at 
 -- the first character of the line.
@@ -49,13 +52,10 @@ vim.opt.hlsearch = false
 -- information like linter warnings/errors, breakpoints, git changes etc.
 vim.opt.signcolumn = "yes"
 
--- Set the leader key to be space
-vim.g.mapleader = " "
-
 -- Hotkey for returning to the file explorer
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
--- Setup lazy.nvim, a package manager for neovim.
+-- Setup lazy.nvim, a plugin manager for neovim.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 -- Only install if it's not already installed.
@@ -89,20 +89,25 @@ end
 -- Add lazy.nvim to the runtime path
 vim.opt.runtimepath:prepend(lazypath)
 
+-- Plugins
+local plugins = {
+    -- Colorscheme plugin. Needs to be loaded as fast as possible.
+    -- TODO pin to a tag, check if we can limit the clone
+    { 
+        "catppuccin/nvim",
+        name = "catppuccin",
+        tag = "v1.9.0",
+        lazy = false,
+        priority = 1000
+    }
+}
+
+-- Install plugins
 require("lazy").setup({
-    -- Plugins
-    spec = {
-        -- Colorscheme plugin
-        -- TODO pin to a tag, check if we can limit the clone
-        { "catppuccin/nvim", name = "catppuccin", priority = 1000 }
-    },
+    spec = plugins,
 
-    -- Configure any other settings here. See the documentation for more details.
-    -- colorscheme that will be used when installing plugins.
-    install = { colorscheme = { "habamax" } },
-
-    -- automatically check for plugin updates
-    checker = { enabled = true },
+    -- Don't check for plugin updates
+    checker = { enabled = false },
 })
 
 -- Set the colorscheme
