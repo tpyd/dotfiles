@@ -107,7 +107,7 @@ local plugins = {
         tag = "0.1.8",
         dependencies = {
             {
-                -- Plenary is a collection of lua functions
+                -- Plenary is a collection of Lua functions
                 "nvim-lua/plenary.nvim",
                 tag = "v0.1.4"
             }
@@ -139,7 +139,4 @@ vim.keymap.set("n", "<leader>pf", builtin.find_files)
 
 -- Live grep all files
 vim.keymap.set("n", "<leader>pg", builtin.live_grep)
-
--- See all open buffers
-vim.keymap.set("n", "<leader>pb", builtin.buffers)
 
