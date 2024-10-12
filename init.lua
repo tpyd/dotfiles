@@ -99,6 +99,19 @@ local plugins = {
         tag = "v1.9.0",
         lazy = false,
         priority = 1000
+    },
+
+    -- Telescope for efficient searching across files
+    {
+        "nvim-telescope/telescope.nvim", 
+        tag = "0.1.8",
+        dependencies = {
+            {
+                -- Plenary is a collection of lua functions
+                "nvim-lua/plenary.nvim",
+                tag = "v0.1.4"
+            }
+        }
     }
 }
 
@@ -110,6 +123,23 @@ require("lazy").setup({
     checker = { enabled = false },
 })
 
+-- Configure catppuccin
+require("catppuccin").setup({
+    transparent_background = true
+})
+
 -- Set the colorscheme
 vim.cmd.colorscheme "catppuccin"
+
+-- Configure key mappings
+local builtin = require("telescope.builtin")
+
+-- Fuzzy search all files 
+vim.keymap.set("n", "<leader>pf", builtin.find_files)
+
+-- Live grep all files
+vim.keymap.set("n", "<leader>pg", builtin.live_grep)
+
+-- See all open buffers
+vim.keymap.set("n", "<leader>pb", builtin.buffers)
 
