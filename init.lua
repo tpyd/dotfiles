@@ -38,13 +38,11 @@ vim.opt.smartcase = true
 vim.opt.clipboard = "unnamedplus"
 
 -- Visual guide at a given column to avoid long lines.
--- TODO make it into a line instead of a block 
--- if possible after colorscheme is set. Also needs to be 81.
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "88"
 
 -- Disable highlighting text that matches the search. The 
 -- hightlight lingers long after the search if enabled.
--- TODO try set autocommand so that text is highlighted only when searching is
+-- TODO create autocommand so that text is highlighted only when searching is
 -- performed.
 vim.opt.hlsearch = false
 
@@ -92,7 +90,6 @@ vim.opt.runtimepath:prepend(lazypath)
 -- Plugins
 local plugins = {
     -- Colorscheme plugin. Needs to be loaded as fast as possible.
-    -- TODO pin to a tag, check if we can limit the clone
     { 
         "catppuccin/nvim",
         name = "catppuccin",
@@ -101,13 +98,19 @@ local plugins = {
         priority = 1000
     },
 
-    -- Telescope for efficient searching across files
+    -- Custom colorcolumn, also known as ruler.
+    { 
+        "lukas-reineke/virt-column.nvim", 
+        tag = "v2.0.2"
+    },
+
+    -- Telescope for efficient searching across files.
+    -- Requires Plenary which is a collection of Lua function.
     {
         "nvim-telescope/telescope.nvim", 
         tag = "0.1.8",
         dependencies = {
             {
-                -- Plenary is a collection of Lua functions
                 "nvim-lua/plenary.nvim",
                 tag = "v0.1.4"
             }
@@ -126,6 +129,12 @@ require("lazy").setup({
 -- Configure catppuccin
 require("catppuccin").setup({
     transparent_background = true
+})
+
+-- Configure virt-column with a more suble char & color
+require("virt-column").setup({
+    char = { "┆" },
+    highlight = { "LineNr" } 
 })
 
 -- Set the colorscheme
