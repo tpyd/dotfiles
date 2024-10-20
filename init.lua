@@ -1,3 +1,6 @@
+-- TODO deleting the nvim-data folder causes a lazy.nvim error when
+-- reinstalling all plugins. Specifically for the colortheme plugin.
+
 -- Set the language to english. Neovim will by 
 -- default use the system language set by the OS.
 vim.env.LANG = "en_US"
@@ -98,7 +101,8 @@ local plugins = {
         priority = 1000
     },
 
-    -- Custom colorcolumn, also known as ruler.
+    -- Custom colorcolumn. Also known as ruler. Much 
+    -- thinner version and with a suble color.
     { 
         "lukas-reineke/virt-column.nvim", 
         tag = "v2.0.2"
@@ -115,6 +119,24 @@ local plugins = {
                 tag = "v0.1.4"
             }
         }
+    },
+
+    -- Lspconfig for easier lsp configuration
+    {
+        "neovim/nvim-lspconfig",
+        tag = "v1.0.0"
+    },
+
+    -- Mason for downloading LSPs
+    {
+        "williamboman/mason.nvim",
+        tag = "v1.10.0"
+    },
+
+    -- Mason lspconfig to integrate with nvim-lspconfig
+    {
+        "williamboman/mason-lspconfig.nvim",
+        tag = "v1.31.0"
     }
 }
 
@@ -148,4 +170,18 @@ vim.keymap.set("n", "<leader>pf", builtin.find_files)
 
 -- Live grep all files
 vim.keymap.set("n", "<leader>pg", builtin.live_grep)
+
+-- Set up LSP
+-- TODO lspconfig fails before mason has time to install any LSP.
+-- TODO after mason has installed an LSP, a restart is required for the LSP to start.
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "lua_ls"
+    },
+    automatic_installation = true
+})
+
+-- TODO configure lua lsp so it recognizes nvim variables
+require("lspconfig").lua_ls.setup({})
 
