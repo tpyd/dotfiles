@@ -101,6 +101,13 @@ local plugins = {
         priority = 1000
     },
 
+    -- Treesitter for better syntax highlighting and navigation
+    {
+        "nvim-treesitter/nvim-treesitter",
+        tag = "v0.9.3",
+        run = ":TSUpdate"
+    },
+
     -- Custom colorcolumn. Also known as ruler. Much 
     -- thinner version and with a suble color.
     { 
@@ -149,6 +156,18 @@ local plugins = {
     {
         "hrsh7th/cmp-nvim-lsp",
         commit = "99290b3"
+    },
+
+    -- Autocomplete for suggestions from the current buffer
+    {
+        "hrsh7th/cmp-buffer",
+        commit = "3022dbc"
+    },
+
+    -- Snippet support for LSP
+    {
+        "L3MON4D3/LuaSnip",
+        tag = "v2.3.0"
     }
 }
 
@@ -163,6 +182,17 @@ require("lazy").setup({
 -- Configure catppuccin
 require("catppuccin").setup({
     transparent_background = true
+})
+
+-- Configure treesitter
+require("nvim-treesitter.configs").setup({
+    ensure_installed = { "lua", "python", "rust" },
+    highlight = {
+        enabled = true
+    },
+    indent = {
+        enabled = true
+    }
 })
 
 -- Configure virt-column with a more suble char & color
@@ -212,6 +242,11 @@ cmp.setup({
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered()
     },
+    snippet = {
+        expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+        end
+    },
     mapping = {
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -221,5 +256,7 @@ cmp.setup({
     },
     sources = {
         { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "buffer" }
     },
 })
