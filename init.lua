@@ -137,6 +137,18 @@ local plugins = {
     {
         "williamboman/mason-lspconfig.nvim",
         tag = "v1.31.0"
+    },
+
+    -- Autocomplete framework
+    {
+        "hrsh7th/nvim-cmp",
+        commit = "b555203"
+    },
+
+    -- Autocomplete LSP support
+    {
+        "hrsh7th/cmp-nvim-lsp",
+        commit = "99290b3"
     }
 }
 
@@ -177,11 +189,37 @@ vim.keymap.set("n", "<leader>pg", builtin.live_grep)
 require("mason").setup()
 require("mason-lspconfig").setup({
     ensure_installed = {
-        "lua_ls"
+        "lua_ls",
+        "ruff",
+        "rust_analyzer"
     },
     automatic_installation = true
 })
 
 -- TODO configure lua lsp so it recognizes nvim variables
 require("lspconfig").lua_ls.setup({})
+require("lspconfig").ruff.setup({})
 
+require("lspconfig").rust_analyzer.setup({
+    capabilities = require("cmp_nvim_lsp").default_capabilities()
+})
+
+-- Autocomplete setup
+local cmp = require("cmp")
+
+cmp.setup({
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered()
+    },
+    mapping = {
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort()
+    },
+    sources = {
+        { name = "nvim_lsp" },
+    },
+})
