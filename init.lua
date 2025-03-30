@@ -52,7 +52,16 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         config = function()
             require("nvim-treesitter.configs").setup({
-                ensure_installed = { "lua", "rust", "python", "toml", "markdown" },
+                ensure_installed = { 
+                    "query", 
+                    "lua", 
+                    "rust", 
+                    "python", 
+                    "c_sharp",
+                    "toml", 
+                    "markdown",
+                    "xml"
+                },
                 highlight = {
                     enable = true
                 }
