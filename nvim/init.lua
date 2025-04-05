@@ -110,23 +110,3 @@ require("lazy").setup({
     }
 })
 
-textobjects = {
-    select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-            ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
-        },
-        selection_modes = {
-            ['@parameter.outer'] = 'v',
-            ['@function.outer'] = 'v',
-            ['@class.outer'] = 'v',
-            ['@block.outer'] = 'v'
-        },
-        include_surrounding_whitespace = false
-    }
-}
