@@ -8,7 +8,7 @@ vim.opt.ignorecase = true
 vim.opt.inccommand = "split"
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 16
 vim.opt.shiftwidth = 4
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -16,7 +16,6 @@ vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.virtualedit = "block"
 
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -85,21 +84,12 @@ require("lazy").setup({
                         enable = true,
                         lookahead = true,
                         keymaps = {
+                            ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
                             ["af"] = "@function.outer",
                             ["if"] = "@function.inner",
                             ["ac"] = "@class.outer",
                             ["ic"] = "@class.inner",
-                            -- ["as"] = "@block.outer",
-                            -- ["is"] = "@block.inner"
-                            -- ["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
                         },
-                        selection_modes = {
-                            ['@parameter.outer'] = 'v',
-                            ['@function.outer'] = 'v',
-                            ['@class.outer'] = 'v',
-                            ['@block.outer'] = 'v'
-                        },
-                        include_surrounding_whitespace = false
                     }
                 }
             })
