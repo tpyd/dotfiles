@@ -2,12 +2,15 @@ vim.env.LANG = "en_US"
 
 vim.g.mapleader = " "
 
+vim.diagnostic.config({ virtual_text = true })
+
 vim.opt.clipboard = "unnamedplus"
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.inccommand = "split"
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 16
 vim.opt.shiftwidth = 4
 vim.opt.splitbelow = true
@@ -97,6 +100,42 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+    {
+        "williamboman/mason.nvim",
+        config = function()
+            require("mason").setup({})
+        end
     }
+})
+
+vim.lsp.config["luals"] = {
+    cmd = { "lua-language-server" },
+    filetypes = { "lua" },
+    root_markers = { "init.lua" },
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
+            }
+        }
+    }
+}
+
+-- TODO rust-analyzer doesn't work
+vim.lsp.config("rust-analyzer", {
+    cmd = { "rust-analyzer" },
+    filetypes = { "rust" },
+    root_markers = { "Cargo.toml" },
+    before_init = function(init_params, config)
+        if config.settings and config.settings['rust-analyzer'] then
+            init_params.initializationOptions = config.settings['rust-analyzer']
+        end
+    end,
+})
+
+vim.lsp.enable({
+    "luals",
+    "rust-analyzer"
 })
 
