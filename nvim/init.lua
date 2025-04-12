@@ -60,14 +60,13 @@ require("lazy").setup({
         config = function()
             require("nvim-treesitter.configs").setup({
                 ensure_installed = {
-                    "query",
+                    "gitcommit",
                     "lua",
-                    "rust",
-                    "python",
-                    "c_sharp",
-                    "toml",
                     "markdown",
-                    "xml"
+                    "python",
+                    "query",
+                    "rust",
+                    "toml"
                 },
                 auto_install = true,
                 highlight = {
@@ -106,36 +105,39 @@ require("lazy").setup({
         config = function()
             require("mason").setup({})
         end
+    },
+    {
+        "neovim/nvim-lspconfig"
     }
 })
 
-vim.lsp.config["luals"] = {
-    cmd = { "lua-language-server" },
-    filetypes = { "lua" },
-    root_markers = { "init.lua" },
-    settings = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT",
-            }
-        }
-    }
-}
+local lspconfig = require("lspconfig")
 
--- TODO rust-analyzer doesn't work
-vim.lsp.config("rust-analyzer", {
-    cmd = { "rust-analyzer" },
-    filetypes = { "rust" },
-    root_markers = { "Cargo.toml" },
-    before_init = function(init_params, config)
-        if config.settings and config.settings['rust-analyzer'] then
-            init_params.initializationOptions = config.settings['rust-analyzer']
+lspconfig.lua_ls.setup({
+    on_init = function(client)
+        if client.workspace_folders then
+            local path = client.workspace_folders[1].name
+            if path ~= vim.fn.stdpath("config") then
+                return
+            end
         end
+
+        client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+            runtime = {
+                version = "LuaJIT"
+            },
+            workspace = {
+                checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME
+                }
+            }
+        })
     end,
+    settings = {
+        Lua = {}
+    }
 })
 
-vim.lsp.enable({
-    "luals",
-    "rust-analyzer"
-})
+lspconfig.rust_analyzer.setup({})
 
