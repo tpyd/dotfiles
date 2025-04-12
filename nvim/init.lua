@@ -108,6 +108,12 @@ require("lazy").setup({
     },
     {
         "neovim/nvim-lspconfig"
+    },
+    {
+        "nvim-lualine/lualine.nvim",
+        config = function()
+            require("lualine").setup({})
+        end
     }
 })
 
