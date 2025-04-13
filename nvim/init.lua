@@ -110,20 +110,41 @@ require("lazy").setup({
         "neovim/nvim-lspconfig"
     },
     {
+        "williamboman/mason-lspconfig.nvim",
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "lua_ls",
+                    "ruff",
+                    "rust_analyzer"
+                }
+            })
+        end
+    },
+    {
         "nvim-lualine/lualine.nvim",
         config = function()
             require("lualine").setup({})
         end
+    },
+    {
+        "ibhagwan/fzf-lua",
+        config = function()
+            local fzf = require("fzf-lua")
+
+            vim.keymap.set("n", "<leader>pf", fzf.files)
+            vim.keymap.set("n", "<leader>pg", fzf.live_grep)
+            vim.keymap.set("n", "<leader>pb", fzf.buffers)
+            vim.keymap.set("n", "<leader>pm", fzf.marks)
+        end
     }
 })
 
-local lspconfig = require("lspconfig")
-
-lspconfig.lua_ls.setup({
+vim.lsp.config("lua_ls", {
     on_init = function(client)
         if client.workspace_folders then
             local path = client.workspace_folders[1].name
-            if path ~= vim.fn.stdpath("config") then
+            if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path.."/.luarc.json") or vim.uv.fs_stat(path.."/.luarc.jsonc")) then
                 return
             end
         end
@@ -145,5 +166,7 @@ lspconfig.lua_ls.setup({
     }
 })
 
-lspconfig.rust_analyzer.setup({})
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("rust_analyzer")
+vim.lsp.enable("ruff")
 
