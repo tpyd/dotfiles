@@ -4,6 +4,8 @@ vim.g.mapleader = " "
 
 vim.diagnostic.config({ virtual_text = true })
 
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
 vim.opt.clipboard = "unnamedplus"
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
@@ -63,7 +65,6 @@ require("lazy").setup({
                     "gitcommit",
                     "lua",
                     "markdown",
-                    "python",
                     "query",
                     "rust",
                     "toml"
@@ -115,7 +116,6 @@ require("lazy").setup({
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "ruff",
                     "rust_analyzer"
                 }
             })
@@ -166,7 +166,8 @@ vim.lsp.config("lua_ls", {
     }
 })
 
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("rust_analyzer")
-vim.lsp.enable("ruff")
+vim.lsp.enable({
+    "lua_ls",
+    "rust_analyzer"
+})
 
