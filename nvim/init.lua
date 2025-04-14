@@ -137,6 +137,20 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>pb", fzf.buffers)
             vim.keymap.set("n", "<leader>pm", fzf.marks)
         end
+    },
+    {
+        "Saghen/blink.cmp",
+        version = "v1.1.1",
+        config = function()
+            require("blink.cmp").setup({
+                fuzzy = {
+                    prebuilt_binaries = {
+                        force_version = "v1.1.1",
+                        ignore_version_mismatch = true
+                    }
+                }
+            })
+        end
     }
 })
 
