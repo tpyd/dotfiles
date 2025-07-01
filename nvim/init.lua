@@ -139,17 +139,11 @@ require("lazy").setup({
         end
     },
     {
-        "Saghen/blink.cmp",
-        version = "v1.1.1",
+        "saghen/blink.cmp",
+        version = "1.*",
+        dependencies = { "rafamadriz/friendly-snippets" },
         config = function()
-            require("blink.cmp").setup({
-                fuzzy = {
-                    prebuilt_binaries = {
-                        force_version = "v1.1.1",
-                        ignore_version_mismatch = true
-                    }
-                }
-            })
+            require("blink.cmp").setup({})
         end
     },
     {
