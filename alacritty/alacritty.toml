@@ -1,0 +1,10 @@
+[font]
+normal = { family = "UbuntuMonoNerdFont", style = "Regular" }
+
+[terminal]
+shell = "/bin/fish"
+
+[window]
+dimensions = { columns = 240, lines = 60 }
+position = { x = 290, y = 270 }
+
