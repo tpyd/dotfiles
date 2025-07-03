@@ -50,6 +50,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     {
         "ellisonleao/gruvbox.nvim",
+        priority = 1000,
         config = function()
             require("gruvbox").setup({
                 transparent_mode = true
@@ -147,10 +148,11 @@ require("lazy").setup({
         end
     },
     {
-        "nvim-lua/plenary.nvim"
-    },
-    {
         "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = {
+            "nvim-lua/plenary.nvim"
+        },
         config = function ()
             local harpoon = require("harpoon").setup({})
             vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
