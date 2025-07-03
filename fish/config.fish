@@ -1,6 +1,8 @@
-if status is-interactive
+#if status is-interactive
     # Commands to run in interactive sessions can go here
-end
+#end
 
-set EDITOR /opt/nvim-linux-x86_64/bin/nvim
-fish_add_path /opt/nvim-linux-x86_64/bin
+set -gx EDITOR /opt/nvim-linux-x86_64/bin/nvim
+set fish_greeting
+#fish_add_path /opt/nvim-linux-x86_64/bin
+
