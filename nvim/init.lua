@@ -20,6 +20,7 @@ vim.opt.splitright = true
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.virtualedit = "block"
+vim.opt.winborder = "rounded"
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
@@ -53,7 +54,8 @@ require("lazy").setup({
         priority = 1000,
         config = function()
             require("gruvbox").setup({
-                transparent_mode = true
+                transparent_mode = true,
+                overrides = { Pmenu = { link = "Normal" } }  -- https://github.com/ellisonleao/gruvbox.nvim/issues/406
             })
             vim.cmd.colorscheme("gruvbox")
         end
@@ -143,9 +145,14 @@ require("lazy").setup({
         "saghen/blink.cmp",
         version = "1.*",
         dependencies = { "rafamadriz/friendly-snippets" },
-        config = function()
-            require("blink.cmp").setup({})
-        end
+        opts = {
+            completion = {
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 0
+                }
+            }
+        }
     },
     {
         "ThePrimeagen/harpoon",
