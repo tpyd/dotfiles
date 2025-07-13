@@ -172,8 +172,9 @@ require("lazy").setup({
     }
 })
 
-local on_attach = function()
-    local opts = { noremap = true }
+local on_attach = function(_, bufnr)
+    local opts = { noremap = true, buffer = bufnr }
+
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
@@ -191,6 +192,28 @@ end
 vim.lsp.config("*", {
     on_attach = on_attach
 })
+
+--[[
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local bufnr = args.buf
+        local opts = { noremap = true, buffer = bufnr }
+
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
+        vim.keymap.set('n', '[d', vim.diagnostic.jump, { count = 1, float = true})
+        vim.keymap.set('n', ']d', vim.diagnostic.jump, { count = -1, float = true})
+        vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+        vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+    end
+})
+]]--
 
 vim.lsp.config("lua_ls", {
     on_init = function(client)
