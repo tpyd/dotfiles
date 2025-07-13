@@ -172,6 +172,7 @@ require("lazy").setup({
     }
 })
 
+--[[
 local on_attach = function(_, bufnr)
     local opts = { noremap = true, buffer = bufnr }
 
@@ -192,14 +193,14 @@ end
 vim.lsp.config("*", {
     on_attach = on_attach
 })
+]]--
 
---[[
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         local bufnr = args.buf
         local opts = { noremap = true, buffer = bufnr }
 
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
@@ -213,7 +214,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
     end
 })
-]]--
 
 vim.lsp.config("lua_ls", {
     on_init = function(client)
