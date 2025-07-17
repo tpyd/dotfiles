@@ -106,29 +106,24 @@ require("lazy").setup({
     },
     {
         "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup({})
-        end
+        opts = {}
     },
     {
         "neovim/nvim-lspconfig"
     },
     {
         "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "lua_ls",
-                    "rust_analyzer"
-                }
-            })
-        end
+        opts = {
+            ensure_installed = {
+                "lua_ls",
+                "ruff",
+                "rust_analyzer"
+            }
+        }
     },
     {
         "nvim-lualine/lualine.nvim",
-        config = function()
-            require("lualine").setup({})
-        end
+        opts = {}
     },
     {
         "ibhagwan/fzf-lua",
@@ -220,6 +215,7 @@ vim.lsp.config("lua_ls", {
 
 vim.lsp.enable({
     "lua_ls",
+    "ruff",
     "rust_analyzer"
 })
 
