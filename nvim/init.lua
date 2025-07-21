@@ -2,7 +2,9 @@ vim.env.LANG = "en_US"
 
 vim.g.mapleader = " "
 
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({
+    virtual_lines = true
+})
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
@@ -139,8 +141,26 @@ require("lazy").setup({
     {
         "saghen/blink.cmp",
         version = "1.*",
-        dependencies = { "rafamadriz/friendly-snippets" },
+        dependencies = {
+            "rafamadriz/friendly-snippets"
+        },
         opts = {
+            sources = {
+                default = {
+                    "lazydev",
+                    "lsp",
+                    "path",
+                    "snippets",
+                    "buffer"
+                },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        score_offset = 100,
+                    }
+                }
+            },
             completion = {
                 documentation = {
                     auto_show = true,
@@ -164,6 +184,17 @@ require("lazy").setup({
             vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
             vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
         end
+    },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+            library = {
+                {
+                    path = "${3rd}/luv/library", words = { "vim%.uv" }
+                }
+            },
+        },
     }
 })
 
