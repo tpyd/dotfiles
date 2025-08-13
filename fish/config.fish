@@ -1,8 +1,7 @@
-#if status is-interactive
-    # Commands to run in interactive sessions can go here
-#end
-
 set -gx EDITOR /opt/nvim-linux-x86_64/bin/nvim
 set fish_greeting
-#fish_add_path /opt/nvim-linux-x86_64/bin
+
+# Explicitly add paths to avoid tmux $PATH shenanigans
+fish_add_path --path $HOME/.cargo/bin
+fish_add_path --path $HOME/.local/bin
 

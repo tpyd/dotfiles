@@ -1,10 +1,10 @@
 [font]
 normal = { family = "UbuntuMonoNerdFont", style = "Regular" }
+size = 16
 
 [terminal]
-shell = "/bin/fish"
+shell = { program = "/bin/fish", args = [ "--login" ] }
 
 [window]
-dimensions = { columns = 240, lines = 60 }
-position = { x = 290, y = 270 }
+startup_mode = "fullscreen"
 
