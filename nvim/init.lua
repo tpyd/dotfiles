@@ -3,7 +3,7 @@ vim.env.LANG = "en_US"
 vim.g.mapleader = " "
 
 vim.diagnostic.config({
-    virtual_lines = true
+    virtual_text = true
 })
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
